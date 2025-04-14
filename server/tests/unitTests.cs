@@ -47,7 +47,27 @@ namespace Server.Tests
 
             Assert.NotEqual(slug1, slug2);
         }
+        
+    [Fact]
+        public void GeneratePassword_ShouldReturnCorrectLength_AndValidCharacters()
+        {
+            int length = 12;
+            string password = UserRoutes.GeneratePassword(length);
+
+            Assert.Equal(length, password.Length);
+
+            const string validChars = "QWERTYUIOPASDFGHJKLZXCVBNM" +
+                                      "qwertyuiopasdfghjklzxcvbnm" +
+                                      "0123456789" +
+                                      "!@#$%^&*()-_=+<,>.";
+
+            foreach (char c in password)
+            {
+                Assert.Contains(c, validChars);
+            }
+        }
     }
-}
+
+    }
 
     
