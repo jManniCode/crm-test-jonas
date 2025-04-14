@@ -46,7 +46,7 @@ jobs:
 
     - name: Run Postman API tests
       run: |
-        newman run tests/CRM-tests.postman_collection.json \
-          --environment tests/env.postman_environment.json \
+        newman run server/tests/crm-test.postman_collection.json \
+          --environment server/tests/crm-test.postman_environment.json \
           --insecure \
           --reporters cli
