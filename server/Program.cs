@@ -38,6 +38,7 @@ app.MapPut("/api/users/agent/{id}", UserRoutes.EditAgent);
 app.MapPut("/api/users/password/{id}", UserRoutes.ResetPassword);
 app.MapPost("/api/users", UserRoutes.AddAdmin);
 app.MapPost("/api/users/agent", UserRoutes.AddAgent);
+app.MapDelete("/users/{id}", UserRoutes.DeleteUser);
 
 app.MapPost("/api/login", LoginRoutes.LoginByRole);
 app.MapDelete("/api/login", LoginRoutes.LogOut);
