@@ -33,23 +33,36 @@ jobs:
     needs: unit-tests
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-      - name: Install Node.js (for Newman)
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
 
-      - name: Install Newman
-        run: npm install -g newman
+    - name: Restore dependencies
+      run: dotnet restore
 
-      - name: Run Postman API tests
-        run: |
-          newman run server/tests/crm-test.postman_collection.json \
-            --environment server/tests/crm-test.postman_environment.json \
-            --insecure \
-            --reporters cli
+    - name: Run server in background
+      run: |
+        dotnet run --project server/ &  # Kör din API-server i bakgrunden
+        sleep 10  # Vänta lite för att låta servern starta
+
+    - name: Install Node.js (for Newman)
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: Install Newman
+      run: npm install -g newman
+
+    - name: Run Postman API tests
+      run: |
+        newman run server/tests/crm-test.postman_collection.json \
+          --environment server/tests/crm-test.postman_environment.json \
+          --insecure \
+          --reporters cli
 
   gui-tests:
     runs-on: ubuntu-latest
