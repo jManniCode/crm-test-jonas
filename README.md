@@ -304,3 +304,8 @@ record company` (int id, string name, string email, string phone, string descrip
   - Hashes passwords from mock data.
   - **Response:**
     - Success or error message.
+
+
+    ### **connection to cluud db **
+    
+    - var dataSourceBuilder = new NpgsqlDataSourceBuilder("Host=217.76.56.135;Database=swine_sync;Username=postgres;Password=_FrozenPresidentSmacks!;Port=5438");

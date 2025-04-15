@@ -4,7 +4,14 @@ using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var dataSourceBuilder = new NpgsqlDataSourceBuilder("Host=217.76.56.135;Database=swine_sync;Username=postgres;Password=_FrozenPresidentSmacks!;Port=5438");
+var host = Environment.GetEnvironmentVariable("PG_HOST") ?? "localhost";
+var port = Environment.GetEnvironmentVariable("PG_PORT") ?? "5432";
+var user = Environment.GetEnvironmentVariable("PG_USER") ?? "postgres";
+var password = Environment.GetEnvironmentVariable("PG_PASSWORD") ?? "yourDefaultPassword";
+var database = Environment.GetEnvironmentVariable("PG_DATABASE") ?? "swine_sync";
+
+var connectionString = $"Host={host};Port={port};Username={user};Password={password};Database={database}";
+var dataSourceBuilder = new NpgsqlDataSourceBuilder(connectionString);
 dataSourceBuilder.MapEnum<UserRole>();
 var db = dataSourceBuilder.Build();
 
