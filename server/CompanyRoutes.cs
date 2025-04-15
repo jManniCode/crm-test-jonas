@@ -128,41 +128,52 @@ public class CompanyRoutes
 
     public record PostCompanyDTO(string Name, string Email, string Phone, string Description, string Domain);
 
-    public static async Task<IResult> AddCompany(PostCompanyDTO company, NpgsqlDataSource db)
+public static async Task<Results<Ok<Company>, BadRequest<string>>> AddCompany(PostCompanyDTO company, NpgsqlDataSource db)
+{
+    try
     {
-        try
+        using var cmd = db.CreateCommand(
+            "INSERT INTO companies (name, email, phone, description, domain, active) " +
+            "VALUES ($1, $2, $3, $4, $5, $6) RETURNING id");
+
+        cmd.Parameters.AddWithValue(company.Name);
+        cmd.Parameters.AddWithValue(company.Email);
+        cmd.Parameters.AddWithValue(company.Phone);
+        cmd.Parameters.AddWithValue(company.Description);
+        cmd.Parameters.AddWithValue(company.Domain);
+        cmd.Parameters.AddWithValue(true);
+
+        var result = await cmd.ExecuteScalarAsync();
+
+        if (result != null)
         {
+            int newId = Convert.ToInt32(result);
+            var createdCompany = new Company(
+                newId,
+                company.Name,
+                company.Email,
+                company.Phone,
+                company.Description,
+                company.Domain,
+                true
+            );
 
-            using var cmd = db.CreateCommand(
-                "INSERT INTO companies (name, email, phone, description, domain, active) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id");
-
-            cmd.Parameters.AddWithValue(company.Name);
-            cmd.Parameters.AddWithValue(company.Email);
-            cmd.Parameters.AddWithValue(company.Phone);
-            cmd.Parameters.AddWithValue(company.Description);
-            cmd.Parameters.AddWithValue(company.Domain);
-            cmd.Parameters.AddWithValue(true);
-
-            var result = await cmd.ExecuteScalarAsync();
-
-            if (result != null)
-            {
-                return TypedResults.Ok("Det funkade! Du la till ett företag!");
-            }
-            else
-            {
-                return TypedResults.BadRequest("Ajsing bajsing, det funkade ej att lägga till företaget");
-            }
+            return TypedResults.Ok(createdCompany);
         }
-        catch (PostgresException ex) when (ex.SqlState == "23505")
+        else
         {
-            return TypedResults.BadRequest("");
-        }
-        catch (Exception ex)
-        {
-            return TypedResults.BadRequest($"Error: {ex.Message}");
+            return TypedResults.BadRequest("Kunde inte skapa företaget.");
         }
     }
+    catch (PostgresException ex) when (ex.SqlState == "23505")
+    {
+        return TypedResults.BadRequest("Ett företag med liknande information finns redan.");
+    }
+    catch (Exception ex)
+    {
+        return TypedResults.BadRequest($"Fel: {ex.Message}");
+    }
+}
 
     public static async Task<IResult> EditCompany(int id, PostCompanyDTO company, NpgsqlDataSource db)
     {
@@ -219,6 +230,42 @@ public class CompanyRoutes
         }
 
     }
+
+public static async Task<Results<Ok<string>, BadRequest<string>, UnauthorizedHttpResult>> DeleteCompany(int id, NpgsqlDataSource db, HttpContext ctx)
+{
+    // Kontrollera att sessionen finns
+    if (!ctx.Session.IsAvailable || ctx.Session.GetInt32("role") is not int roleInt)
+    {
+        return TypedResults.Unauthorized();
+    }
+
+    // Kontrollera att det är en superadmin
+    if ((UserRole)roleInt != UserRole.super_admin)
+    {
+        return TypedResults.Unauthorized();
+    }
+
+    try
+    {
+        using var cmd = db.CreateCommand("DELETE FROM companies WHERE id = $1");
+        cmd.Parameters.AddWithValue(id);
+
+        int rowsAffected = await cmd.ExecuteNonQueryAsync();
+
+        if (rowsAffected > 0)
+        {
+            return TypedResults.Ok("Företaget raderades permanent.");
+        }
+        else
+        {
+            return TypedResults.BadRequest("Inget företag med det ID:t hittades.");
+        }
+    }
+    catch (Exception ex)
+    {
+        return TypedResults.BadRequest($"Ett fel inträffade: {ex.Message}");
+    }
+}
 
 
 }

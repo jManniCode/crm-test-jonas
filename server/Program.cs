@@ -4,14 +4,7 @@ using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var host = Environment.GetEnvironmentVariable("PG_HOST") ?? "localhost";
-var port = Environment.GetEnvironmentVariable("PG_PORT") ?? "5432";
-var user = Environment.GetEnvironmentVariable("PG_USER") ?? "postgres";
-var password = Environment.GetEnvironmentVariable("PG_PASSWORD") ?? "yourDefaultPassword";
-var database = Environment.GetEnvironmentVariable("PG_DATABASE") ?? "swine_sync";
-
-var connectionString = $"Host={host};Port={port};Username={user};Password={password};Database={database}";
-var dataSourceBuilder = new NpgsqlDataSourceBuilder(connectionString);
+var dataSourceBuilder = new NpgsqlDataSourceBuilder("Host=217.76.56.135;Database=swine_sync;Username=postgres;Password=_FrozenPresidentSmacks!;Port=5438");
 dataSourceBuilder.MapEnum<UserRole>();
 var db = dataSourceBuilder.Build();
 
@@ -33,6 +26,7 @@ app.MapGet("/api/companies/{id}", CompanyRoutes.GetCompany);
 app.MapPut("/api/companies/{id}", CompanyRoutes.EditCompany);
 app.MapPut("/api/companies/block/{id}/{active}", CompanyRoutes.BlockCompany);
 app.MapPost("/api/companies", CompanyRoutes.AddCompany);
+app.MapDelete("/api/companies/{id}", CompanyRoutes.DeleteCompany);
 
 app.MapGet("/api/roles/users/{role}", UserRoutes.GetUsers);
 

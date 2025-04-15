@@ -101,6 +101,147 @@
 					"response": []
 				},
 				{
+					"name": "CreateCompany",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Should return 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Extrahera ID (om API:t returnerar det senare)\r",
+									"\r",
+									"    const json = pm.response.json();\r",
+									"    pm.environment.set(\"lastCreatedCompanyId\", json.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Testbolag AB\",\r\n  \"email\": \"kontakt@testbolag.se\",\r\n  \"phone\": \"0123456789\",\r\n  \"description\": \"Ett testbolag för API-testning\",\r\n  \"domain\": \"www.testbolag.se\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/companies",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"companies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SeeCompany",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/companies/{{lastCreatedCompanyId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"companies",
+								"{{lastCreatedCompanyId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EditCompany",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Uppdaterat Företag AB\",\r\n  \"email\": \"nykontakt@foretag.se\",\r\n  \"phone\": \"0101234567\",\r\n  \"description\": \"Detta är ett uppdaterat företag.\",\r\n  \"domain\": \"https://uppdateratforetag.se\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/companies/{{lastCreatedCompanyId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"companies",
+								"{{lastCreatedCompanyId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SeeCompany Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/companies/{{lastCreatedCompanyId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"companies",
+								"{{lastCreatedCompanyId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteCompany",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/companies/{{lastCreatedCompanyId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"companies",
+								"{{lastCreatedCompanyId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "DeleteAdmin",
 					"event": [
 						{

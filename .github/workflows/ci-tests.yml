@@ -74,7 +74,7 @@ jobs:
 
   # gui-tests:
   #   runs-on: ubuntu-latest
-  #   needs: unit-tests
+  #   needs: api-test
 
   #   env:
   #     PG_HOST: ${{ secrets.PG_HOST }}
