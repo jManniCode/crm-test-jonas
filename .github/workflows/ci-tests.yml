@@ -83,7 +83,6 @@ jobs:
       PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
       PG_DATABASE: ${{ secrets.PG_DATABASE }}
       EMAIL__PASSWORD: ${{ secrets.EMAIL__PASSWORD }}
-      PATH: ${{ github.workspace }}/.dotnet/tools:$PATH
 
     steps:
       - name: Checkout code
@@ -94,20 +93,17 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Install Playwright CLI
-        run: dotnet tool install --global Microsoft.Playwright.CLI
-
-      - name: Add .NET tools to PATH
-        run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
-
       - name: Restore GUI test project
-        run: dotnet restore ServerGuiTests
+        run: cd ServerGuiTests && dotnet restore
 
       - name: Build GUI test project
-        run: dotnet build ServerGuiTests
+        run: cd ServerGuiTests && dotnet build
 
-      - name: Install Playwright browsers
-        run: playwright install
+      - name: Install Playwright Browsers
+        run: cd ServerGuiTests && pwsh bin/Debug/net8.0/playwright.ps1 install --with-deps
+
+      - name: Start backend server
+        run: nohup dotnet run --project server &
 
       - name: Run Playwright GUI tests
-        run: dotnet test ServerGuiTests --logger "console;verbosity=normal"
+        run: cd ServerGuiTests && dotnet test
