@@ -197,7 +197,7 @@ public static async Task<Results<Ok<Company>, BadRequest<string>>> AddCompany(Po
                 return TypedResults.NotFound("Företaget hittades inte");
             }
 
-            return TypedResults.Ok("Företaget updaterades!");
+            return TypedResults.Ok("Företaget uppdaterades!");
         }
         catch (Exception ex)
         {

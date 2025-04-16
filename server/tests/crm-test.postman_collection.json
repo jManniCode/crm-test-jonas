@@ -19,7 +19,13 @@
 								"exec": [
 									"pm.test(\"Should return 200 OK\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
-									"});"
+									"});\r",
+									"\r",
+									"pm.test(\"Responsen innehåller rätt roll\", function () {\r",
+									"    const json = pm.response.json();\r",
+									"    pm.expect(json).to.include(\"super-admin\");\r",
+									"});\r",
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -66,7 +72,14 @@
 									"\r",
 									"pm.test(\"Should return 200 OK\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
-									"});"
+									"});\r",
+									"\r",
+									"pm.test(\"Responsen innehåller ett ID\", function () {\r",
+									"    const json = pm.response.json();\r",
+									"    pm.expect(json.id).to.not.be.undefined;\r",
+									"    pm.expect(json.id).to.be.a(\"number\");\r",
+									"});\r",
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -111,7 +124,7 @@
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
-									"// Extrahera ID (om API:t returnerar det senare)\r",
+									"\r",
 									"\r",
 									"    const json = pm.response.json();\r",
 									"    pm.environment.set(\"lastCreatedCompanyId\", json.id);"
@@ -150,6 +163,21 @@
 				},
 				{
 					"name": "SeeCompany",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Företagets namn är korrekt\", function () {\r",
+									"    const json = pm.response.json();\r",
+									"    pm.expect(json.name).to.eql(\"Testbolag AB\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -171,6 +199,21 @@
 				},
 				{
 					"name": "EditCompany",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Företagsbeskrivningen har uppdaterats\", function () {\r",
+									"    const json = pm.response.json();\r",
+									"    pm.expect(pm.response.text()).to.include(\"uppdaterades\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -201,6 +244,21 @@
 				},
 				{
 					"name": "SeeCompany Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Företagets namn är korrekt\", function () {\r",
+									"    const json = pm.response.json();\r",
+									"    pm.expect(json.name).to.eql(\"Uppdaterat Företag AB\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -222,6 +280,21 @@
 				},
 				{
 					"name": "DeleteCompany",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Företagsbeskrivningen har uppdaterats\", function () {\r",
+									"    const json = pm.response.json();\r",
+									"    pm.expect(pm.response.text()).to.include(\"raderades\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -407,6 +480,179 @@
 					"response": []
 				},
 				{
+					"name": "AddProduct",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Should return 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200)\r",
+									"});\r",
+									"\r",
+									"const json = pm.response.json();\r",
+									"pm.environment.set(\"lastCreatedProduct\", json.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"Testprodukt\",\r\n    \"Description\" : \"beskrivning\",\r\n    \"Price\" : 200,\r\n    \"Category\" : \"Service\",\r\n    \"Company\" : 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EditProduct",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Should return 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": {{lastCreatedProduct}},\r\n  \"name\": \"Testprodukt\",\r\n  \"description\": \"Ny beskrivning\",\r\n  \"price\": 299,\r\n  \"category\": \"Service\",\r\n  \"company\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CheckUpdatedProduct",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Should return 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const json = pm.response.json();\r",
+									"\r",
+									"\r",
+									"pm.test(\"Should have updated price\", function () {\r",
+									"    pm.expect(json.price).to.eql(299);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/products/{{lastCreatedProduct}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"products",
+								"{{lastCreatedProduct}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteProduct",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Statuskoden är 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Rätt meddelande returneras\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"Produkten togs bort\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/products/{{lastCreatedProduct}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"products",
+								"{{lastCreatedProduct}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "DeleteServiceAgent",
 					"event": [
 						{
@@ -469,6 +715,152 @@
 							"path": [
 								"api",
 								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ServiceAgentTests",
+			"item": [
+				{
+					"name": "LoginServiceAgent",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Statuskoden är 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Responsen innehåller rätt roll\", function () {\r",
+									"    const json = pm.response.json();\r",
+									"    pm.expect(json).to.include(\"customer-service\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"tryne@hotmail.com\",\r\n  \"password\": \"asd123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAssignedTickets",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Hämtar tilldelade tickets\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    const tickets = pm.response.json();\r",
+									"    pm.expect(tickets).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Statuskoden är 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/tickets/assigned",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"tickets",
+								"assigned"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddMessage",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Should return 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response text should confirm addition\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"La till meddelandet\");\r",
+									"});\r",
+									"\r",
+									"const json = pm.response.json();\r",
+									"pm.environment.set(\"lastCreatedMessageId\", json.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"slug\": \"sprinkler-coverage-019\",\r\n  \"text\": \"Vi jobbar på att lösa detta så snart som möjligt!\",\r\n  \"customer\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/messages/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"messages",
+								""
 							]
 						}
 					},

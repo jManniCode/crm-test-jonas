@@ -149,46 +149,66 @@ public class ProductRoutes()
 
     public record PostProductDTO(string Name, string Description, int Price, string Category, int Company);
 
-    public static async Task<IResult> AddProduct(PostProductDTO product, HttpContext ctx, NpgsqlDataSource db)
+ public static async Task<Results<Ok<object>, BadRequest<string>>> AddProduct(PostProductDTO product, HttpContext ctx, NpgsqlDataSource db)
+{
+    try
     {
-        try
+        var companyId_nullable = ctx.Session.GetInt32("company");
+        if (!companyId_nullable.HasValue)
         {
-            var companyId_nullable = ctx.Session.GetInt32("company");
-            if (!companyId_nullable.HasValue)
-            {
-                return TypedResults.BadRequest("Error when accessing Session variables");
-            }
-            int companyId = companyId_nullable.Value;
-
-            using var cmd = db.CreateCommand(
-                "INSERT INTO products (product_name, product_description, price, product_category, company) VALUES ($1, $2, $3, $4, $5) RETURNING id");
-
-            cmd.Parameters.AddWithValue(product.Name);
-            cmd.Parameters.AddWithValue(product.Description);
-            cmd.Parameters.AddWithValue(product.Price);
-            cmd.Parameters.AddWithValue(product.Category);
-            cmd.Parameters.AddWithValue(companyId);
-
-            var result = await cmd.ExecuteScalarAsync();
-
-            if (result != null)
-            {
-                return TypedResults.Ok("Det funkade! Du la till en product!");
-            }
-            else
-            {
-                return TypedResults.BadRequest("Ajsing bajsing, det funkade ej att lägga till produkten");
-            }
+            return TypedResults.BadRequest("Error when accessing Session variables");
         }
-        catch (PostgresException ex) when (ex.SqlState == "23505") // Hanterar unikhetsfel
+        int companyId = companyId_nullable.Value;
+
+        using var cmd = db.CreateCommand(
+            "INSERT INTO products (product_name, product_description, price, product_category, company) VALUES ($1, $2, $3, $4, $5) RETURNING id");
+
+        cmd.Parameters.AddWithValue(product.Name);
+        cmd.Parameters.AddWithValue(product.Description);
+        cmd.Parameters.AddWithValue(product.Price);
+        cmd.Parameters.AddWithValue(product.Category);
+        cmd.Parameters.AddWithValue(companyId);
+
+        var result = await cmd.ExecuteScalarAsync();
+
+        if (result is int newId)
         {
-            return TypedResults.BadRequest("produkten är redan registrerad!");
+            var response = new
+            {
+                id = newId,
+                name = product.Name,
+                description = product.Description,
+                price = product.Price,
+                category = product.Category,
+                company = companyId
+            };
+
+            return TypedResults.Ok((object)new
+{
+    id = newId,
+    name = product.Name,
+    description = product.Description,
+    price = product.Price,
+    category = product.Category,
+    company = companyId
+});
+
         }
-        catch (Exception ex)
+        else
         {
-            return TypedResults.BadRequest($"Ett fel inträffade: {ex.Message}");
+            return TypedResults.BadRequest("Det gick inte att skapa produkten");
         }
     }
+    catch (PostgresException ex) when (ex.SqlState == "23505")
+    {
+        return TypedResults.BadRequest("Produkten är redan registrerad!");
+    }
+    catch (Exception ex)
+    {
+        return TypedResults.BadRequest($"Ett fel inträffade: {ex.Message}");
+    }
+}
+
 
 
 
@@ -221,5 +241,38 @@ public class ProductRoutes()
             return TypedResults.BadRequest($"ett fel har inträffat: {ex.Message}");
         }
     }
+
+public static async Task<IResult> DeleteProduct(int id, HttpContext ctx, NpgsqlDataSource db)
+{
+    var role = ctx.Session.GetInt32("role");
+
+    if (role != (int)UserRole.Admin)
+    {
+        return TypedResults.Json("Endast admin kan ta bort produkter.", statusCode: 401);
+    }
+
+    try
+    {
+        using var cmd = db.CreateCommand("DELETE FROM products WHERE id = $1");
+        cmd.Parameters.AddWithValue(id);
+
+        int rowsAffected = await cmd.ExecuteNonQueryAsync();
+
+        if (rowsAffected > 0)
+        {
+            return TypedResults.Ok("Produkten togs bort.");
+        }
+        else
+        {
+            return TypedResults.BadRequest("Ingen produkt med det ID:t kunde hittas.");
+        }
+    }
+    catch (Exception ex)
+    {
+        return TypedResults.BadRequest($"Fel vid borttagning: {ex.Message}");
+    }
+}
+
+
 
 }

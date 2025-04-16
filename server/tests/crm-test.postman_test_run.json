@@ -1,0 +1,510 @@
+{
+	"id": "5b5ca2d3-008a-4143-b683-2b38935e6b52",
+	"name": "crm-test",
+	"timestamp": "2025-04-16T08:19:08.860Z",
+	"collection_id": "43554531-6cf9427d-1d4d-4504-bfff-e0c9c44a0321",
+	"folder_id": 0,
+	"environment_id": "43554531-86dd2067-ad36-43ab-a323-8f069a022d6c",
+	"totalPass": 13,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2025-04-16T08:19:03.124Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "30c07502-d6d9-49f9-b492-62a915bc69a7",
+			"name": "LoginSuperAdmin",
+			"url": "http://localhost:5000/api/login",
+			"time": 81,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Should return 200 OK": true
+			},
+			"testPassFailCounts": {
+				"Should return 200 OK": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				81
+			],
+			"allTests": [
+				{
+					"Should return 200 OK": true
+				}
+			]
+		},
+		{
+			"id": "e575826d-2dad-44bc-a3cf-44e89996fc39",
+			"name": "CreateAdmin",
+			"url": "http://localhost:5000/api/users",
+			"time": 1442,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Should return 200 OK": true
+			},
+			"testPassFailCounts": {
+				"Should return 200 OK": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1442
+			],
+			"allTests": [
+				{
+					"Should return 200 OK": true
+				}
+			]
+		},
+		{
+			"id": "71d26fb0-92b9-4902-9723-efdab1c61180",
+			"name": "CreateCompany",
+			"url": "http://localhost:5000/api/companies",
+			"time": 38,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Should return 200 OK": true
+			},
+			"testPassFailCounts": {
+				"Should return 200 OK": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				38
+			],
+			"allTests": [
+				{
+					"Should return 200 OK": true
+				}
+			]
+		},
+		{
+			"id": "b871471d-4cfc-49b3-9daa-54fa7bd05045",
+			"name": "SeeCompany",
+			"url": "http://localhost:5000/api/companies/111",
+			"time": 34,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				34
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "b4e41f9c-6409-4fd2-b5df-2408770388b1",
+			"name": "EditCompany",
+			"url": "http://localhost:5000/api/companies/111",
+			"time": 35,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				35
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "94be7f6e-fe49-4482-a84a-8ce9f5cbed59",
+			"name": "SeeCompany Copy",
+			"url": "http://localhost:5000/api/companies/111",
+			"time": 34,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				34
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "e92d8604-bd28-4e57-a977-ee279ef3876f",
+			"name": "DeleteCompany",
+			"url": "http://localhost:5000/api/companies/111",
+			"time": 34,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				34
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "5c232a4f-feb9-4365-b73e-95cf518447b8",
+			"name": "DeleteAdmin",
+			"url": "http://localhost:5000/users/168",
+			"time": 77,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Should return 200 OK": true
+			},
+			"testPassFailCounts": {
+				"Should return 200 OK": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				77
+			],
+			"allTests": [
+				{
+					"Should return 200 OK": true
+				}
+			]
+		},
+		{
+			"id": "d8cd4314-bdc0-40e2-b061-0d1b2cce7c6e",
+			"name": "LogoutSuperAdmin",
+			"url": "http://localhost:5000/api/login",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Should return 200 OK": true
+			},
+			"testPassFailCounts": {
+				"Should return 200 OK": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				2
+			],
+			"allTests": [
+				{
+					"Should return 200 OK": true
+				}
+			]
+		},
+		{
+			"id": "7cc7cb87-e241-42b9-9ca5-91b0cc2a6f22",
+			"name": "LoginAdmin",
+			"url": "http://localhost:5000/api/login",
+			"time": 80,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Should return 200 OK": true
+			},
+			"testPassFailCounts": {
+				"Should return 200 OK": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				80
+			],
+			"allTests": [
+				{
+					"Should return 200 OK": true
+				}
+			]
+		},
+		{
+			"id": "f462d26b-560d-4336-b672-f4c24f01b632",
+			"name": "AddServiceAgent",
+			"url": "http://localhost:5000/api/users/agent",
+			"time": 2120,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Should return 200 OK": true
+			},
+			"testPassFailCounts": {
+				"Should return 200 OK": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				2120
+			],
+			"allTests": [
+				{
+					"Should return 200 OK": true
+				}
+			]
+		},
+		{
+			"id": "7d92f88e-9e94-483e-b6c6-d022d9fd74db",
+			"name": "AddProduct",
+			"url": "http://localhost:5000/api/products",
+			"time": 33,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Should return 200 OK": true
+			},
+			"testPassFailCounts": {
+				"Should return 200 OK": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				33
+			],
+			"allTests": [
+				{
+					"Should return 200 OK": true
+				}
+			]
+		},
+		{
+			"id": "603e6cc6-7914-4c3f-bd76-ced6d47c6976",
+			"name": "EditProduct",
+			"url": "http://localhost:5000/api/products",
+			"time": 33,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Should return 200 OK": true
+			},
+			"testPassFailCounts": {
+				"Should return 200 OK": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				33
+			],
+			"allTests": [
+				{
+					"Should return 200 OK": true
+				}
+			]
+		},
+		{
+			"id": "2c29c7c9-ffdc-4530-baed-64c7a3ddb0b7",
+			"name": "CheckUpdatedProduct",
+			"url": "http://localhost:5000/api/products/135",
+			"time": 40,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Should return 200 OK": true,
+				"Should have updated price": true
+			},
+			"testPassFailCounts": {
+				"Should return 200 OK": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Should have updated price": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				40
+			],
+			"allTests": [
+				{
+					"Should return 200 OK": true,
+					"Should have updated price": true
+				}
+			]
+		},
+		{
+			"id": "5e1b0c71-f12a-4872-89d9-b7f3366d7df2",
+			"name": "DeleteProduct",
+			"url": "http://localhost:5000/api/products/135",
+			"time": 35,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				35
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "aa2237ee-d1d0-4a0d-b270-9961e197ce24",
+			"name": "DeleteServiceAgent",
+			"url": "http://localhost:5000/users/169",
+			"time": 75,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Should return 200 OK": true
+			},
+			"testPassFailCounts": {
+				"Should return 200 OK": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				75
+			],
+			"allTests": [
+				{
+					"Should return 200 OK": true
+				}
+			]
+		},
+		{
+			"id": "b8a30f37-e267-47eb-a3f4-210074df1cfb",
+			"name": "LogoutAdmin",
+			"url": "http://localhost:5000/api/login",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Should return 200 OK": true
+			},
+			"testPassFailCounts": {
+				"Should return 200 OK": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				2
+			],
+			"allTests": [
+				{
+					"Should return 200 OK": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 4195,
+	"collection": {
+		"requests": [
+			{
+				"id": "30c07502-d6d9-49f9-b492-62a915bc69a7",
+				"method": "POST"
+			},
+			{
+				"id": "e575826d-2dad-44bc-a3cf-44e89996fc39",
+				"method": "POST"
+			},
+			{
+				"id": "71d26fb0-92b9-4902-9723-efdab1c61180",
+				"method": "POST"
+			},
+			{
+				"id": "b871471d-4cfc-49b3-9daa-54fa7bd05045",
+				"method": "GET"
+			},
+			{
+				"id": "b4e41f9c-6409-4fd2-b5df-2408770388b1",
+				"method": "PUT"
+			},
+			{
+				"id": "94be7f6e-fe49-4482-a84a-8ce9f5cbed59",
+				"method": "GET"
+			},
+			{
+				"id": "e92d8604-bd28-4e57-a977-ee279ef3876f",
+				"method": "DELETE"
+			},
+			{
+				"id": "5c232a4f-feb9-4365-b73e-95cf518447b8",
+				"method": "DELETE"
+			},
+			{
+				"id": "d8cd4314-bdc0-40e2-b061-0d1b2cce7c6e",
+				"method": "DELETE"
+			},
+			{
+				"id": "7cc7cb87-e241-42b9-9ca5-91b0cc2a6f22",
+				"method": "POST"
+			},
+			{
+				"id": "f462d26b-560d-4336-b672-f4c24f01b632",
+				"method": "POST"
+			},
+			{
+				"id": "7d92f88e-9e94-483e-b6c6-d022d9fd74db",
+				"method": "POST"
+			},
+			{
+				"id": "603e6cc6-7914-4c3f-bd76-ced6d47c6976",
+				"method": "PUT"
+			},
+			{
+				"id": "2c29c7c9-ffdc-4530-baed-64c7a3ddb0b7",
+				"method": "GET"
+			},
+			{
+				"id": "5e1b0c71-f12a-4872-89d9-b7f3366d7df2",
+				"method": "DELETE"
+			},
+			{
+				"id": "aa2237ee-d1d0-4a0d-b270-9961e197ce24",
+				"method": "DELETE"
+			},
+			{
+				"id": "b8a30f37-e267-47eb-a3f4-210074df1cfb",
+				"method": "DELETE"
+			}
+		]
+	}
+}

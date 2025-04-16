@@ -55,6 +55,8 @@ app.MapGet("/api/products/customer-ticket/", ProductRoutes.GetProductsForTicket)
 app.MapPut("/api/products", ProductRoutes.EditProduct);
 app.MapPut("/api/products/block/{id}/{active}", ProductRoutes.BlockProductById);
 app.MapPost("/api/products", ProductRoutes.AddProduct);
+app.MapDelete("/api/products/{id}", ProductRoutes.DeleteProduct);
+
 
 app.MapGet("/api/tickets/{slug}", TicketRoutes.GetTicket);
 app.MapGet("/api/tickets/unassigned", TicketRoutes.GetUnassignedTickets);
@@ -68,6 +70,7 @@ app.MapPost("/api/tickets", TicketRoutes.CreateTicket);
 
 app.MapGet("/api/messages/{slug}", MessageRoutes.GetTicketMessages);
 app.MapPost("/api/messages/", MessageRoutes.AddMessage);
+
 
 //use after installation of mockdata. 
 app.MapPost("/api/password/mockhash/", MockHasher.HashMockPasswords);
