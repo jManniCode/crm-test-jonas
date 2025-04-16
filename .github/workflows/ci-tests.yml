@@ -72,38 +72,42 @@ jobs:
             --insecure \
             --reporters cli
 
-  # gui-tests:
-  #   runs-on: ubuntu-latest
-  #   needs: api-test
+  gui-tests:
+    runs-on: ubuntu-latest
+    needs: api-test
 
-  #   env:
-  #     PG_HOST: ${{ secrets.PG_HOST }}
-  #     PG_PORT: ${{ secrets.PG_PORT }}
-  #     PG_USER: ${{ secrets.PG_USER }}
-  #     PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
-  #     PG_DATABASE: ${{ secrets.PG_DATABASE }}
-  #     EMAIL__PASSWORD: ${{ secrets.EMAIL__PASSWORD }}
+    env:
+      PG_HOST: ${{ secrets.PG_HOST }}
+      PG_PORT: ${{ secrets.PG_PORT }}
+      PG_USER: ${{ secrets.PG_USER }}
+      PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
+      PG_DATABASE: ${{ secrets.PG_DATABASE }}
+      EMAIL__PASSWORD: ${{ secrets.EMAIL__PASSWORD }}
+      PATH: ${{ github.workspace }}/.dotnet/tools:$PATH
 
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-  #     - name: Setup .NET
-  #       uses: actions/setup-dotnet@v4
-  #       with:
-  #         dotnet-version: '8.0.x'
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
 
-  #     - name: Install Playwright CLI
-  #       run: dotnet tool install --global Microsoft.Playwright.CLI
+      - name: Install Playwright CLI
+        run: dotnet tool install --global Microsoft.Playwright.CLI
 
-  #     - name: Restore GUI test project
-  #       run: dotnet restore ServerGuiTests
+      - name: Add .NET tools to PATH
+        run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
 
-  #     - name: Build GUI test project
-  #       run: dotnet build ServerGuiTests
+      - name: Restore GUI test project
+        run: dotnet restore ServerGuiTests
 
-  #     - name: Install browsers
-  #       run: playwright install
+      - name: Build GUI test project
+        run: dotnet build ServerGuiTests
 
-  #     - name: Run Playwright GUI tests
-  #       run: dotnet test ServerGuiTests
+      - name: Install Playwright browsers
+        run: playwright install
+
+      - name: Run Playwright GUI tests
+        run: dotnet test ServerGuiTests --logger "console;verbosity=normal"
