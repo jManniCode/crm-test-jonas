@@ -18,7 +18,7 @@ public class CompanyFlowTest
         _playwright = await Playwright.CreateAsync();
         _browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
         {
-            Headless = true,
+            Headless = false,
             SlowMo = 1000
         });
         _context = await _browser.NewContextAsync(new BrowserNewContextOptions
@@ -42,16 +42,19 @@ public class CompanyFlowTest
         await _page.GotoAsync("http://localhost:5000/");
 
 
-        await _page.GetByRole(AriaRole.Textbox, new() { Name = "Email.." }).FillAsync("super_gris@mail.com");
-        await _page.GetByRole(AriaRole.Textbox, new() { Name = "Password.." }).FillAsync("kung");
-        await _page.GetByRole(AriaRole.Button, new() { Name = "login!" }).ClickAsync();
+await _page.GotoAsync("http://localhost:5000/");
+await _page.GetByRole(AriaRole.Textbox, new() { Name = "Email.." }).ClickAsync();
+await _page.GetByRole(AriaRole.Textbox, new() { Name = "Email.." }).FillAsync("super_gris@mail.com");
+await _page.GetByRole(AriaRole.Textbox, new() { Name = "Password.." }).ClickAsync();
+await _page.GetByRole(AriaRole.Textbox, new() { Name = "Password.." }).FillAsync("kung");
+await _page.GetByRole(AriaRole.Button, new() { Name = "login!" }).ClickAsync();
+await _page.GetByRole(AriaRole.Button, new() { Name = "Companies" }).ClickAsync();
+await _page.GetByRole(AriaRole.Button, new() { Name = "block" }).Nth(3).ClickAsync();
+await _page.GetByRole(AriaRole.Button, new() { Name = "Show Inactive Companies" }).ClickAsync();
+await _page.GetByRole(AriaRole.Button, new() { Name = "Activate" }).ClickAsync();
+await _page.GetByRole(AriaRole.Button, new() { Name = "⬅️ Back" }).ClickAsync();
+await _page.GetByRole(AriaRole.Button, new() { Name = "Sign Out" }).ClickAsync();
 
-        await _page.GetByRole(AriaRole.Button, new() { Name = "Companies" }).ClickAsync();
-        await _page.GetByRole(AriaRole.Button, new() { Name = "block" }).Nth(4).ClickAsync();
-        await _page.GetByRole(AriaRole.Button, new() { Name = "Show Inactive Companies" }).ClickAsync();
-        await _page.GetByRole(AriaRole.Button, new() { Name = "Activate" }).ClickAsync();
-        await _page.GetByRole(AriaRole.Button, new() { Name = "⬅️ Back" }).ClickAsync();
-        await _page.GetByRole(AriaRole.Button, new() { Name = "Sign Out" }).ClickAsync();
 
         // Kontrollera att vi är tillbaka på inloggningssidan
         await _page.WaitForSelectorAsync("input[name=email]");
