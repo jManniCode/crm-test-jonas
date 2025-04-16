@@ -232,7 +232,9 @@ public class TicketRoutes
 
 
     public record NewTicket(int productId, int categoryId, string message, string email, string description);
-    public static async Task<Results<Ok<string>, BadRequest<string>>> CreateTicket(NewTicket ticket, NpgsqlDataSource db)
+    public record CreatedTicketDTO(string slug, string url);
+
+   public static async Task<Results<Ok<CreatedTicketDTO>, BadRequest<string>>> CreateTicket(NewTicket ticket, NpgsqlDataSource db)
     {
         try
         {
@@ -285,7 +287,9 @@ public class TicketRoutes
             string subject = "Ticket on Produkt" + ticket.productId;
             string message = "Hej, Vi kommer svara på din ticket så fort vi kan! Här är en länk till chatten. " + url;
             MailService.SendMail(ticket.email, subject, message);
-            return TypedResults.Ok(url);
+            return TypedResults.Ok(new CreatedTicketDTO(slug, $"http://localhost:5173/customer/{slug}/chat"));
+
+
 
 
         }

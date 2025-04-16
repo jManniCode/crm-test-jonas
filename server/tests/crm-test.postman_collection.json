@@ -285,7 +285,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Företagsbeskrivningen har uppdaterats\", function () {\r",
+									"pm.test(\"Företaget har raderats\", function () {\r",
 									"    const json = pm.response.json();\r",
 									"    pm.expect(pm.response.text()).to.include(\"raderades\");\r",
 									"});"
@@ -830,8 +830,7 @@
 									"    pm.expect(pm.response.text()).to.include(\"La till meddelandet\");\r",
 									"});\r",
 									"\r",
-									"const json = pm.response.json();\r",
-									"pm.environment.set(\"lastCreatedMessageId\", json.id);"
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -844,6 +843,109 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"slug\": \"sprinkler-coverage-019\",\r\n  \"text\": \"Vi jobbar på att lösa detta så snart som möjligt!\",\r\n  \"customer\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/messages/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"messages",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CustomerTests",
+			"item": [
+				{
+					"name": "CreateTicket",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Statuskoden är 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const json = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Svar innehåller slug och url\", function () {\r",
+									"    pm.expect(json).to.have.property(\"slug\");\r",
+									"    pm.expect(json).to.have.property(\"url\");\r",
+									"    pm.expect(json.url).to.include(json.slug);\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"lastCreatedTicketSlug\", json.slug);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"productId\": 42,\r\n  \"categoryId\": 5,\r\n  \"message\": \"Hej, produkten funkar inte!\",\r\n  \"email\": \"kund@example.com\",\r\n  \"description\": \"Beskrivning av problemet\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/tickets",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"tickets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddMessage",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Statuskoden är 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"slug\": \"{{lastCreatedTicketSlug}}\",\r\n  \"text\": \"Jag behöver hjälp med min order!\",\r\n  \"customer\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
