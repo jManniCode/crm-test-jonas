@@ -39,7 +39,8 @@ public class CompanyFlowTest
     [TestMethod]
     public async Task SuperAdmin_CanBlock_And_Reactivate_Company()
     {
-        await _page.GotoAsync("http://localhost:5173/");
+        await page.GotoAsync("http://localhost:5000/");
+
 
         await _page.GetByRole(AriaRole.Textbox, new() { Name = "Email.." }).FillAsync("super_gris@mail.com");
         await _page.GetByRole(AriaRole.Textbox, new() { Name = "Password.." }).FillAsync("kung");
