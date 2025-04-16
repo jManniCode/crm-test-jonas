@@ -121,3 +121,4 @@ gui-tests:
 
     - name: Run Playwright GUI tests
       run: cd ServerGuiTests && dotnet test
+
