@@ -120,5 +120,8 @@ jobs:
       - name: Start backend server
         run: nohup dotnet run --project server &
 
+      - name: Wait for server to start
+        run: sleep 5
+
       - name: Run Playwright GUI tests
         run: cd ServerGuiTests && dotnet test
