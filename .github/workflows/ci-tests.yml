@@ -86,13 +86,13 @@ jobs:
         run: cd server && dotnet restore
 
       - name: Build/Restore Playwright GUI test project
-        run: cd ServerGuiTests && dotnet build
+        run: cd GuiTests && dotnet build
 
       - name: Ensure Playwright browsers are installed
-        run: cd ServerGuiTests && pwsh bin/Debug/net8.0/playwright.ps1 install --with-deps
+        run: cd GuiTests && pwsh bin/Debug/net8.0/playwright.ps1 install --with-deps
 
       - name: Start backend server
         run: cd server && nohup dotnet run &
 
       - name: Run GUI tests
-        run: cd ServerGuiTests && dotnet test
+        run: cd GuiTests && dotnet test
