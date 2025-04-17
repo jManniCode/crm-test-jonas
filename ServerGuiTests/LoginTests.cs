@@ -23,7 +23,7 @@ public class CompanyFlowTest
         });
         _context = await _browser.NewContextAsync(new BrowserNewContextOptions
         {
-            ViewportSize = null // Fullskärm
+            ViewportSize = null 
         });
         _page = await _context.NewPageAsync();
     }
