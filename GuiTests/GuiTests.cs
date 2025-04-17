@@ -11,16 +11,16 @@ public class CompanyFlowTest
     private IBrowser _browser = null!;
     private IBrowserContext _context = null!;
     private IPage _page = null!;
-
+    
     [TestInitialize]
     public async Task Setup()
     {
         _playwright = await Playwright.CreateAsync();
         _browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
         {            
-            
-            Headless = true,
-            SlowMo = 1000
+
+            Headless = false,
+            SlowMo = 1500
         });
         _context = await _browser.NewContextAsync(new BrowserNewContextOptions
         {
