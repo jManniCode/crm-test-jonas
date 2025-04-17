@@ -775,6 +775,50 @@
 					"response": []
 				},
 				{
+					"name": "CreateCompany Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Endast superadmin kan skapa företag\", function () {\r",
+									"    pm.response.to.have.status(400); // BadRequest\r",
+									"    pm.expect(pm.response.text()).to.include(\"Endast superadmin kan skapa företag\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Testbolag AB\",\r\n  \"email\": \"kontakt@testbolag.se\",\r\n  \"phone\": \"0123456789\",\r\n  \"description\": \"Ett testbolag för API-testning\",\r\n  \"domain\": \"www.testbolag.se\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/companies",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"companies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "GetAssignedTickets",
 					"event": [
 						{
