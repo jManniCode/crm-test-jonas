@@ -128,8 +128,14 @@ public class CompanyRoutes
 
     public record PostCompanyDTO(string Name, string Email, string Phone, string Description, string Domain);
 
-public static async Task<Results<Ok<Company>, BadRequest<string>>> AddCompany(PostCompanyDTO company, NpgsqlDataSource db)
+public static async Task<Results<Ok<Company>, BadRequest<string>, UnauthorizedHttpResult>> AddCompany(PostCompanyDTO company, NpgsqlDataSource db, HttpContext ctx)
 {
+    if (!ctx.Session.IsAvailable || ctx.Session.GetInt32("role") is not int roleInt)
+        return TypedResults.Unauthorized();
+
+    if ((UserRole)roleInt != UserRole.super_admin)
+        return TypedResults.BadRequest("Endast superadmin kan skapa företag.");
+
     try
     {
         using var cmd = db.CreateCommand(
@@ -174,6 +180,7 @@ public static async Task<Results<Ok<Company>, BadRequest<string>>> AddCompany(Po
         return TypedResults.BadRequest($"Fel: {ex.Message}");
     }
 }
+
 
     public static async Task<IResult> EditCompany(int id, PostCompanyDTO company, NpgsqlDataSource db)
     {
