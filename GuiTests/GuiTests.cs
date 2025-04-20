@@ -18,7 +18,6 @@ public class CompanyFlowTest
         _playwright = await Playwright.CreateAsync();
         _browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
         {            
-
             Headless = true,
             SlowMo = 1500
         });
